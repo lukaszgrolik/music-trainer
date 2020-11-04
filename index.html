@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>music-trainer</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tonaljs/tonal/browser/tonal.min.js"></script>
+
+    <style>
+        :root {
+            --white-key-width: 21px;
+            /* --white-key-height: 137px; */
+            --white-key-height: 68px;
+
+            --black-key-width: 14px;
+            --black-key-height: 42px;
+
+            --key-size-multiplier: 3;
+        }
+
+        #app-root {
+
+        }
+
+        .octave-keyboard-wrapper {
+            /* background-color: silver; */
+            /* padding: 5px; */
+        }
+
+        .octave-keyboard {
+            height: calc(var(--white-key-height) * var(--key-size-multiplier));
+            position: relative;
+        }
+
+        .octave-keyboard-white-key {
+            background-color: white;
+            width: calc(var(--white-key-width) * var(--key-size-multiplier));
+            height: calc(var(--white-key-height) * var(--key-size-multiplier));
+            position: absolute;
+            top: 0;
+        }
+
+        .octave-keyboard-black-key-group {
+            position: absolute;
+            top: 0;
+        }
+
+        .octave-keyboard-black-key {
+            background: linear-gradient(#555 90%, #444 90%, #444 95%, #333 95%);
+            width: calc(var(--black-key-width) * var(--key-size-multiplier));
+            height: calc(var(--black-key-height) * var(--key-size-multiplier));
+            position: absolute;
+            top: 0;
+            box-sizing: border-box;
+            border-width: 0 5px 5px 5px;
+            border-style: solid;
+            border-color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div id="piano-root"></div>
+    <div id="fretboard-root"></div>
+    <div id="bass-fretboard-root"></div>
+    <div id="fretboard-shapes-root"></div>
+    <div id="chords-table-root"></div>
+
+    <div id="scale-send-form">
+        <form>
+            <input type="text" name="scale">
+            <button>send</button>
+            <div></div>
+        </form>
+
+        <ul id="latest-scales"></ul>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="piano.js"></script>
+    <script src="fretboard/fretboard-template-full.js"></script>
+    <script src="fretboard/fretboard-template-shapes.js"></script>
+    <script src="fretboard/fretboard.js"></script>
+    <script src="fretboard-shapes-box.js"></script>
+    <script src="chords-table.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
