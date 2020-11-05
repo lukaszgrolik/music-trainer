@@ -21,19 +21,20 @@
     ];
 
     const keyboard = (octaves) => {
-        return `<div class="keyboard" style="background-color: #222; display: flex; padding: 5px; line-height: 1; font-family: sans-serif;">
-            ${new Array(octaves).fill().map((_, i) => {
-            return octaveKeyboard();
-        }).join('')
+        return `<div class="keyboard" style="background-color: #222; display: inline-flex; padding: 5px; line-height: 1; font-family: sans-serif;">
+            ${
+                new Array(octaves).fill().map((_, i) => {
+                    return octaveKeyboard(i !== octaves - 1);
+                }).join('')
             }
         </div>`
     }
 
-    const octaveKeyboard = () => {
+    const octaveKeyboard = (hasMargin) => {
         // const width = (whiteKeyWidth + whiteKeyMargin) * whiteKeys.length - whiteKeyMargin;
         const width = whiteKeyWidth * whiteKeys.length + whiteKeyMargin * (whiteKeys.length - 1);
 
-        return `<div class="octave-keyboard-wrapper" style="margin-right: 5px">
+        return `<div class="octave-keyboard-wrapper" style="${hasMargin ? 'margin-right: 5px' : ''}">
             <div class="octave-keyboard" style="width: ${width}px">
                 ${
                     whiteKeys.map((note, i) => {

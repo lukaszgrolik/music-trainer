@@ -32,36 +32,41 @@
         render(el) {
             const shapes = [
                 {
-                    id: 'minor',
-                    scale: 'F minor',
-                    frets: 4,
+                    id: 'minor-scale',
+                    shapes: [
+                        {
+                            scale: 'F minor',
+                            frets: 4,
+                        },
+                        {
+                            scale: 'G minor',
+                            frets: 5,
+                        },
+                        {
+                            scale: 'G# minor',
+                            frets: 4,
+                            strings: 4,
+                        }
+                    ],
                 },
                 {
-                    id: 'minor-shape2',
-                    scale: 'G minor',
-                    frets: 5,
-                },
-                {
-                    id: 'minor-shape3',
-                    scale: 'G# minor',
-                    frets: 4,
-                    strings: 4,
-                },
-                {
-                    id: 'major',
-                    scale: 'F# major',
-                    frets: 4,
-                },
-                {
-                    id: 'major-shape2',
-                    scale: 'F major',
-                    frets: 5,
-                },
-                {
-                    id: 'major-shape3',
-                    scale: 'G# major',
-                    frets: 4,
-                    strings: 4,
+                    id: 'major-scale',
+                    shapes: [
+                        {
+                            scale: 'F# major',
+                            frets: 4,
+                        },
+                        {
+                            scale: 'F major',
+                            frets: 5,
+                        },
+                        {
+                            scale: 'G# major',
+                            frets: 4,
+                            strings: 4,
+                        }
+                    ],
+
                 },
                 {
                     id: 'minor-triad',
@@ -180,6 +185,41 @@
                             chord: 'B',
                             frets: 2,
                             strings: 3,
+                        },
+                    ],
+                },
+                {
+                    id: 'm7b5_dim7_aug',
+                    shapes: [
+                        {
+                            chord: 'Fm7b5',
+                            frets: 13,
+                            strings: 4,
+                        },
+                        {
+                            chord: 'Fdim7',
+                            frets: 13,
+                            strings: 4,
+                        },
+                        {
+                            chord: 'F+',
+                            frets: 13,
+                            strings: 4,
+                        },
+                    ],
+                },
+                {
+                    id: 'sus2_sus4',
+                    shapes: [
+                        {
+                            chord: 'Fsus2',
+                            frets: 13,
+                            strings: 4,
+                        },
+                        {
+                            chord: 'Fsus4',
+                            frets: 13,
+                            strings: 4,
                         },
                     ],
                 },

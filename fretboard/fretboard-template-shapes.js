@@ -122,6 +122,7 @@
             // 'border': '2px solid black',
             'border': `2px solid ${color}`,
             // ...(isRoot && { border: '2px solid black' }),
+            'flex-shrink': 0,
         };
 
         return `<div data-mark-string="${string}" style="${styleString(wrapperStyle)}">
