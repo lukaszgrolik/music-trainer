@@ -86,6 +86,11 @@
                             frets: 5,
                             strings: 2,
                         },
+                        {
+                            chord: 'G#m',
+                            frets: 8,
+                            strings: 4,
+                        },
                     ],
                 },
                 {
@@ -146,6 +151,11 @@
                             frets: 4,
                             strings: 3,
                         },
+                        {
+                            chord: 'G#',
+                            frets: 8,
+                            strings: 4,
+                        },
                     ],
                 },
                 {
@@ -185,6 +195,26 @@
                             chord: 'B',
                             frets: 2,
                             strings: 3,
+                        },
+                    ],
+                },
+                {
+                    id: 'm7_maj7_7',
+                    shapes: [
+                        {
+                            chord: 'G#m7',
+                            frets: 8,
+                            strings: 4,
+                        },
+                        {
+                            chord: 'G#maj7',
+                            frets: 8,
+                            strings: 4,
+                        },
+                        {
+                            chord: 'G#7',
+                            frets: 8,
+                            strings: 4,
                         },
                     ],
                 },
