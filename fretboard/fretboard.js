@@ -39,6 +39,8 @@
             }, [{ width: this.opts.firstFretAreaWidth, pos: 0 }])
             // .slice(opts.startingFret);
 
+            this.zeroFretWidth = this.opts.stringAreaHeight * 2;
+
             const lastFret = this.frets[this.frets.length - 1];
             this.totalWidth = lastFret.pos + lastFret.width;
             // this.totalWidth = lastFret.pos + lastFret.width - this.frets[0].pos;
@@ -54,12 +56,14 @@
             const chromas = notes.map(chroma);
 
             const container = this.root.querySelector('[data-fretboard]');
+            const noteMarksContainer = this.root.querySelector('[data-fretboard-note-marks]');
 
             // this.onShowNotes(container, notes, chromas);
 
-            container.querySelectorAll('[data-mark-string]').forEach(el => el.remove());
+            // noteMarksContainer.querySelectorAll('[data-mark-string]').forEach(el => el.remove());
+            noteMarksContainer.innerHTML = null;
 
-            Array.from(this.root.querySelectorAll('[data-string]')).map(el => {
+            Array.from(this.root.querySelectorAll('[data-string]')).forEach(el => {
                 const stringIndex = parseInt(el.getAttribute('data-string'));
                 const fretIndex = parseInt(el.getAttribute('data-fret'));
                 const string = this.notes[stringIndex];
@@ -79,13 +83,34 @@
                         isRoot,
                         string: stringIndex,
                         fret: this.frets[fretIndex],
+                        isActive: true,
                     });
-                    container.innerHTML += markEl;
+                    noteMarksContainer.innerHTML += markEl;
                 }
                 else {
                     el.innerHTML = null;
                 }
             });
+
+            const zeroFretNoteMarksContainer = this.root.querySelector('[data-zero-fret-note-marks]');
+
+            if (zeroFretNoteMarksContainer) {
+                zeroFretNoteMarksContainer.innerHTML = null;
+
+                this.opts.strings.forEach((string, i) => {
+                    const noteChroma = chroma(string);
+                    zeroFretNoteMarksContainer.innerHTML += this.opts.NoteMarkTemplate({
+                        fretboard: this,
+                        chroma: noteChroma,
+                        rootChroma: chromas[0],
+                        note: string,
+                        // isRoot,
+                        string: i,
+                        fret: { pos: 0, width: this.zeroFretWidth },
+                        isActive: chromas.includes(noteChroma),
+                    });
+                });
+            }
         }
     }
 

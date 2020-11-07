@@ -19,8 +19,14 @@
             --key-size-multiplier: 3;
         }
 
-        #app-root {
+        #app-container {
+            display: flex;
 
+
+        }
+
+        #app-container > * + * {
+            margin-left: 1em;
         }
 
         .octave-keyboard-wrapper {
@@ -60,20 +66,24 @@
     </style>
 </head>
 <body>
-    <div id="piano-root"></div>
-    <div id="fretboard-root"></div>
-    <div id="bass-fretboard-root"></div>
-    <div id="fretboard-shapes-root"></div>
-    <div id="chords-table-root"></div>
+    <div id="app-container">
+        <div id="scale-send-form">
+            <form>
+                <input type="text" name="scale">
+                <button>send</button>
+                <div></div>
+            </form>
 
-    <div id="scale-send-form">
-        <form>
-            <input type="text" name="scale">
-            <button>send</button>
-            <div></div>
-        </form>
+            <ul id="latest-scales"></ul>
+        </div>
 
-        <ul id="latest-scales"></ul>
+        <div>
+            <div id="piano-root"></div>
+            <div id="fretboard-root"></div>
+            <div id="bass-fretboard-root"></div>
+            <div id="fretboard-shapes-root"></div>
+            <div id="chords-table-root"></div>
+        </div>
     </div>
 
     <script src="utils.js"></script>

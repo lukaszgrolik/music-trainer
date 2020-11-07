@@ -18,6 +18,7 @@
                     <th></th>
                     <th>note</th>
                     <th>mode</th>
+                    <th>aliases</th>
                     <th>chords</th>
                 </tr>
 
@@ -30,6 +31,7 @@
                             <td>#${i + 1}</td>
                             <th>${noteName}</th>
                             <th>${modeName}</th>
+                            <td style="text-align: center">${Tonal.Scale.get(mode[0]).aliases.join(', ') || '-'}</td>
                             <td>
                                 ${
                                     mode[1]

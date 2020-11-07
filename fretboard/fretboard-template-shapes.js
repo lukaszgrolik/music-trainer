@@ -87,6 +87,8 @@
                 }).join('')
             }
             -->
+
+            <div data-fretboard-note-marks style="position: absolute; left: 0px; width: ${fretboard.totalWidth}px; height: ${fretboard.totalHeight}px;"></div>
         </div>`
     }
 
