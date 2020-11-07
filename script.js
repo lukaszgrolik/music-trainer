@@ -55,12 +55,14 @@
 
     const fretboardShapesBox = new FretboardShapesBox();
     const chordsTable = new ChordsTable(store);
+    const progressionsBlock = new ProgressionsBlock(store);
 
     piano.render(document.getElementById('piano-root'));
     fretboard.render(document.getElementById('fretboard-root'));
     // bassFretboard.render(document.getElementById('bass-fretboard-root'));
     fretboardShapesBox.render(document.getElementById('fretboard-shapes-root'));
     chordsTable.render(document.getElementById('chords-table-root'))
+    progressionsBlock.render(document.getElementById('progressions-root'))
 
     window.app = {
         showNotes() {
