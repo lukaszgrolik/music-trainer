@@ -68,8 +68,12 @@ const barChords = [
     '', 'm', 'maj7', 'm7', '7', 'sus2', 'sus4', 'ø', '+'
 ];
 
-export const ProgressionsBlock = observer(() => {
-    const randomBarChords = utils.randomSamples(barChords, barChords.length).map(chord => {
+function getRandomOpenChords() {
+    return utils.randomSamples(openChords, openChords.length);
+}
+
+function getRandomBarChords() {
+    return utils.randomSamples(barChords, barChords.length).map(chord => {
         const letter = utils.randomSample(['A', 'B', 'C', 'D', 'E', 'F', 'G']);
         if (typeof letter !== 'string') throw new Error(`invalid letter: ${letter}`);
 
@@ -78,6 +82,18 @@ export const ProgressionsBlock = observer(() => {
 
         return letter + acc + chord;
     });
+}
+
+function getRandomProgressions() {
+    return utils.randomSamples(progressions, 3);
+}
+
+export const ProgressionsBlock = observer(() => {
+    const [randomOpenChords] = React.useState(getRandomOpenChords());
+    const [randomBarChords] = React.useState(getRandomBarChords());
+    const [showDiagrams, setShowDiagrams] = React.useState(false);
+    const [showScales, setShowScales] = React.useState(false);
+    const [randomProgressions] = React.useState(getRandomProgressions());
 
     const style = {
         fontFamily: 'Consolas, monospace',
@@ -94,7 +110,7 @@ export const ProgressionsBlock = observer(() => {
                     <div>
                         <ChordsList>
                             {
-                                utils.randomSamples(openChords, openChords.length).map(chord => {
+                                randomOpenChords.map(chord => {
                                     return <ChordBlock key={chord}>{chord}</ChordBlock>
                                 })
                             }
@@ -117,10 +133,30 @@ export const ProgressionsBlock = observer(() => {
                 </ChordsWrapper>
             </Header>
 
+            <div>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showDiagrams}
+                        onChange={e => setShowDiagrams(e.currentTarget.checked)}
+                    />
+                    show diagrams
+                </label>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={showScales}
+                        onChange={e => setShowScales(e.currentTarget.checked)}
+                    />
+                    show scales
+                </label>
+            </div>
+
             {
-                utils.randomSamples(progressions, 3).map((prog, i) => {
+                randomProgressions.map((prog, i) => {
                     return (
-                        <ProgressionBlock key={i} prog={prog} />
+                        <ProgressionBlock key={i} prog={prog} showDiagrams={showDiagrams} showScales={showScales} />
                     );
                 })
             }
@@ -177,9 +213,9 @@ const ScaleBlock = styled.div`
     padding: .1em .25em;
 `;
 
-const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = observer(({prog}) => {
-    const key = utils.randomSample(keys);
-    if (!key) throw new Error();
+const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem; showDiagrams: boolean; showScales: boolean}> = observer(({prog, showDiagrams, showScales}) => {
+    const [key] = React.useState(utils.randomSample(keys));
+    if (!key) throw new Error('key is invalid');
 
     const getChords = (prog: ProgressionItem) => prog instanceof Array ? prog : prog.chords;
     const chords = getChords(prog);
@@ -218,15 +254,19 @@ const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = obser
                 <div style={{ fontWeight: 'bold' }}>{key} - {chords.join('-')} ({tonalChords.join('-')})</div>
                 <div>{progInfo.name || 'unnamed'}{progInfo.info ? ` | ${progInfo.info}` : ''}</div>
 
-                <ScalesList style={{ fontSize: '.8em' }}>
-                    {
-                        sharedScales.filter(s => visibleScales.includes(s)).map((s, i) => {
-                            return (
-                                <ScaleBlock key={i}>{s}</ScaleBlock>
-                            );
-                        })
-                    }
-                </ScalesList>
+                {
+                    showScales
+                    &&
+                    <ScalesList style={{ fontSize: '.8em' }}>
+                        {
+                            sharedScales.filter(s => visibleScales.includes(s)).map((s, i) => {
+                                return (
+                                    <ScaleBlock key={i}>{s}</ScaleBlock>
+                                    );
+                                })
+                        }
+                    </ScalesList>
+                }
             </div>
 
             <table>
@@ -235,7 +275,9 @@ const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = obser
                         {
                             tonalChords.map((chord, i) => {
                                 return (
-                                    <th key={i}>{chords[i]} - {chord}</th>
+                                    <th key={i}>
+                                        <div style={{border: '1px solid #bbb', padding: '.25em .5em'}}>{chords[i]} - {chord}</div>
+                                    </th>
                                 );
                             })
                         }
@@ -247,7 +289,7 @@ const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = obser
                         {
                             tonalChords.map((chord, i) => {
                                 return <td key={i}>
-                                    <ProgressionChordBlock chord={chord} />
+                                    <ProgressionChordBlock chord={chord} showDiagrams={showDiagrams} showScales={showScales} />
                                 </td>
                             })
                         }
@@ -260,7 +302,7 @@ const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = obser
 
 const guitarScale = (a: number) => a * 2;
 
-const ProgressionChordBlock: React.FC<{chord: string}> = observer(({chord}) => {
+const ProgressionChordBlock: React.FC<{chord: string; showDiagrams: boolean; showScales: boolean}> = observer(({chord, showDiagrams, showScales}) => {
     const [kb] = React.useState(new Keyboard({
         octaves: 2,
         whiteKeyWidth: 21,
@@ -282,28 +324,38 @@ const ProgressionChordBlock: React.FC<{chord: string}> = observer(({chord}) => {
     }));
 
     React.useEffect(() => {
-        const notes = Tonal.Chord.get(chord).notes;
-        kb.showNotes(notes);
-        fb.showNotes(notes);
-    }, []);
+        if (showDiagrams) {
+            const notes = Tonal.Chord.get(chord).notes;
+            kb.showNotes(notes);
+            fb.showNotes(notes);
+        }
+    }, [showDiagrams]);
 
     return (
         <div>
             {/* <div>piano chord, fretboard chord</div> */}
-            <div>
-                <FretboardBlock model={fb} />
-                <KeyboardBlock model={kb} />
-            </div>
+            {
+                showDiagrams
+                &&
+                <div>
+                    <FretboardBlock model={fb} />
+                    <KeyboardBlock model={kb} />
+                </div>
+            }
 
-            <ScalesList style={{ fontSize: '.8em' }}>
-                {
-                    Tonal.Chord.chordScales(chord).filter(s => visibleScales.includes(s)).map((s, i) => {
-                        return (
-                            <ScaleBlock key={i}>{s}</ScaleBlock>
-                        );
-                    })
-                }
-            </ScalesList>
+            {
+                showScales
+                &&
+                <ScalesList style={{ fontSize: '.8em' }}>
+                    {
+                        Tonal.Chord.chordScales(chord).filter(s => visibleScales.includes(s)).map((s, i) => {
+                            return (
+                                <ScaleBlock key={i}>{s}</ScaleBlock>
+                                );
+                            })
+                    }
+                </ScalesList>
+            }
         </div>
     );
 });
