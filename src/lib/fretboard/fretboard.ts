@@ -110,14 +110,14 @@ export class Fretboard {
     }
 
     showNotes(notes: string[]) {
-        if (!this.root) throw new Error();
+        if (!this.root) throw new Error('root element not found');
 
         // notes = sanitizeNotes(notes);
         const chromas = notes.map(chroma);
 
         const container = this.root.querySelector('[data-fretboard]');
         const noteMarksContainer = this.root.querySelector('[data-fretboard-note-marks]');
-        if (!noteMarksContainer) throw new Error();
+        if (!noteMarksContainer) throw new Error('marks container not found');
 
         // this.onShowNotes(container, notes, chromas);
 
@@ -126,11 +126,11 @@ export class Fretboard {
 
         Array.from(this.root.querySelectorAll('[data-string]')).forEach(el => {
             const dataString = el.getAttribute('data-string')
-            if (!dataString) throw new Error();
+            if (!dataString) throw new Error('data-string attribute not found');
             const stringIndex = parseInt(dataString);
 
             const dataFret = el.getAttribute('data-fret')
-            if (!dataFret) throw new Error();
+            if (!dataFret) throw new Error('data-fret attribute not found');
             const fretIndex = parseInt(dataFret);
 
             const string = this.notes[stringIndex];

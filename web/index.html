@@ -6,61 +6,7 @@
     <title>music-trainer</title>
 
     <style>
-        :root {
-            --white-key-width: 21px;
-            /* --white-key-height: 137px; */
-            --white-key-height: 68px;
 
-            --black-key-width: 14px;
-            --black-key-height: 42px;
-
-            --key-size-multiplier: 3;
-        }
-
-        #app-container {
-            display: flex;
-
-
-        }
-
-        #app-container > * + * {
-            margin-left: 1em;
-        }
-
-        /* .octave-keyboard-wrapper {
-            background-color: silver;
-            padding: 5px;
-        } */
-
-        .octave-keyboard {
-            height: calc(var(--white-key-height) * var(--key-size-multiplier));
-            position: relative;
-        }
-
-        .octave-keyboard-white-key {
-            background-color: white;
-            width: calc(var(--white-key-width) * var(--key-size-multiplier));
-            height: calc(var(--white-key-height) * var(--key-size-multiplier));
-            position: absolute;
-            top: 0;
-        }
-
-        .octave-keyboard-black-key-group {
-            position: absolute;
-            top: 0;
-        }
-
-        .octave-keyboard-black-key {
-            background: linear-gradient(#555 90%, #444 90%, #444 95%, #333 95%);
-            width: calc(var(--black-key-width) * var(--key-size-multiplier));
-            height: calc(var(--black-key-height) * var(--key-size-multiplier));
-            position: absolute;
-            top: 0;
-            box-sizing: border-box;
-            border-width: 0 5px 5px 5px;
-            border-style: solid;
-            border-color: #222;
-        }
     </style>
 </head>
 <body>

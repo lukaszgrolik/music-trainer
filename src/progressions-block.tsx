@@ -1,10 +1,13 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import { observer } from 'mobx-react-lite';
-
 import * as Tonal from '@tonaljs/tonal';
 
 import * as utils from './utils';
+import { Keyboard } from './lib/keyboard/keyboard';
+import { KeyboardBlock } from './keyboard-block';
+import { Fretboard, FretboardTemplateFull } from './lib/fretboard/fretboard';
+import { FretboardBlock } from './fretboard-block';
 
 const visibleScales = [
     'major', 'ionian',
@@ -84,8 +87,35 @@ export const ProgressionsBlock = observer(() => {
 
     return (
         <div style={style}>
-            <div>random open chords: {utils.randomSamples(openChords, openChords.length).join(', ')}</div>
-            <div>random bar chords: {randomBarChords.join(', ')}</div>
+            <Header>
+                <ChordsWrapper>
+                    <div>random open chords:</div>
+
+                    <div>
+                        <ChordsList>
+                            {
+                                utils.randomSamples(openChords, openChords.length).map(chord => {
+                                    return <ChordBlock key={chord}>{chord}</ChordBlock>
+                                })
+                            }
+                        </ChordsList>
+                    </div>
+                </ChordsWrapper>
+
+                <ChordsWrapper>
+                    <div>random bar chords:</div>
+
+                    <div>
+                        <ChordsList>
+                            {
+                                randomBarChords.map(chord => {
+                                    return <ChordBlock key={chord}>{chord}</ChordBlock>
+                                })
+                            }
+                        </ChordsList>
+                    </div>
+                </ChordsWrapper>
+            </Header>
 
             {
                 utils.randomSamples(progressions, 3).map((prog, i) => {
@@ -98,16 +128,48 @@ export const ProgressionsBlock = observer(() => {
     );
 })
 
-const space = '.5em';
+const Header = styled.div`
+    > * + * {
+        margin-top: 1em;
+    }
+`;
+const ChordsWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+
+    > * + * {
+        margin-left: 1em;
+    }
+`;
+
+const chordsListSpace = '.5em';
+const ChordsList = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -${chordsListSpace};
+    margin-left: -${chordsListSpace};
+
+    > * {
+        margin-top: ${chordsListSpace};
+        margin-left: ${chordsListSpace};
+    }
+`;
+const ChordBlock = styled.div`
+    border: 1px solid #ccc;
+    padding: .1em .25em;
+`;
+
+const scalesListSpace = '.5em';
 const ScalesList = styled.div`
     display: flex;
     flex-wrap: wrap;
-    margin-top: -${space};
-    margin-left: -${space};
+    margin-top: -${scalesListSpace};
+    margin-left: -${scalesListSpace};
 
     > * {
-        margin-top: ${space};
-        margin-left: ${space};
+        margin-top: ${scalesListSpace};
+        margin-left: ${scalesListSpace};
     }
 `;
 const ScaleBlock = styled.div`
@@ -185,22 +247,63 @@ const ProgressionBlock: React.FunctionComponent<{prog: ProgressionItem}> = obser
                         {
                             tonalChords.map((chord, i) => {
                                 return <td key={i}>
-                                    {/* <div>piano chord, fretboard chord</div> */}
-                                    <ScalesList style={{ fontSize: '.8em',  }}>
-                                        {
-                                            Tonal.Chord.chordScales(chord).filter(s => visibleScales.includes(s)).map((s, i) => {
-                                                return (
-                                                    <ScaleBlock key={i}>{s}</ScaleBlock>
-                                                );
-                                            })
-                                        }
-                                    </ScalesList>
+                                    <ProgressionChordBlock chord={chord} />
                                 </td>
                             })
                         }
                     </tr>
                 </tbody>
             </table>
+        </div>
+    );
+});
+
+const guitarScale = (a: number) => a * 2;
+
+const ProgressionChordBlock: React.FC<{chord: string}> = observer(({chord}) => {
+    const [kb] = React.useState(new Keyboard({
+        octaves: 2,
+        whiteKeyWidth: 21,
+        whiteKeyHeight: 68,
+        blackKeyWidth: 14,
+        blackKeyHeight: 42,
+        keySizeMultiplier: 1,
+    }));
+    const [fb] = React.useState(new Fretboard({
+        FretboardTemplate: FretboardTemplateFull.FretboardTemplate,
+        NoteMarkTemplate: FretboardTemplateFull.NoteMarkTemplate,
+        frets: 12,
+        // startingFret: 0,
+        strings: ['E', 'A', 'D', 'G', 'B', 'E'],
+        stringsSize: [guitarScale(2), guitarScale(1 / 3)],
+        firstFretAreaWidth: guitarScale(35),
+        stringAreaHeight: guitarScale(10),
+        fretWidth: guitarScale(3),
+    }));
+
+    React.useEffect(() => {
+        const notes = Tonal.Chord.get(chord).notes;
+        kb.showNotes(notes);
+        fb.showNotes(notes);
+    }, []);
+
+    return (
+        <div>
+            {/* <div>piano chord, fretboard chord</div> */}
+            <div>
+                <FretboardBlock model={fb} />
+                <KeyboardBlock model={kb} />
+            </div>
+
+            <ScalesList style={{ fontSize: '.8em' }}>
+                {
+                    Tonal.Chord.chordScales(chord).filter(s => visibleScales.includes(s)).map((s, i) => {
+                        return (
+                            <ScaleBlock key={i}>{s}</ScaleBlock>
+                        );
+                    })
+                }
+            </ScalesList>
         </div>
     );
 });

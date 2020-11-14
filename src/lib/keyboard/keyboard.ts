@@ -2,23 +2,6 @@ const whiteKeys = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 const blackKeys = [['C#', 'D#'], ['F#', 'G#', 'A#']];
 const allNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
-const computedStyle = getComputedStyle(document.body);
-const whiteKeyBaseWidth = parseInt(computedStyle.getPropertyValue('--white-key-width'));
-const blackKeyBaseWidth = parseInt(computedStyle.getPropertyValue('--black-key-width'));
-
-const keySizeMultiplier = parseInt(computedStyle.getPropertyValue('--key-size-multiplier'));
-
-const whiteKeyWidth = whiteKeyBaseWidth * keySizeMultiplier;
-const blackKeyWidth = blackKeyBaseWidth * keySizeMultiplier;
-
-const whiteKeyMargin = 5;
-const blackKeyMargin = 27;
-
-const blackKeysGrops = [
-    { marginLeft: `${whiteKeyWidth * 2 / 3}px` },
-    { marginLeft: `${whiteKeyWidth * 3.925}px` },
-];
-
 function styleString(style: {[key: string]: string}) {
     return Object.entries(style).map(([prop, val]) => {
         return `${prop}: ${style[prop]}`;
@@ -47,34 +30,72 @@ function chroma(note: string) {
     return res;
 }
 
-const KeyboardBlock = (octaves: number) => {
+const KeyboardBlock = (keyboard: Keyboard) => {
     return `<div class="keyboard" style="background-color: #222; display: inline-flex; padding: 5px; line-height: 1; font-family: sans-serif;">
         ${
-            new Array(octaves).fill(undefined).map((_, i) => {
-                return OctaveKeyboardBlock(i !== octaves - 1);
+            new Array(keyboard.opts.octaves).fill(undefined).map((_, i) => {
+                return OctaveKeyboardBlock(keyboard, i !== keyboard.opts.octaves - 1);
             }).join('')
         }
     </div>`
 }
 
-const OctaveKeyboardBlock = (hasMargin: boolean) => {
+const OctaveKeyboardBlock = (keyboard: Keyboard, hasMargin: boolean) => {
     // const width = (whiteKeyWidth + whiteKeyMargin) * whiteKeys.length - whiteKeyMargin;
-    const width = whiteKeyWidth * whiteKeys.length + whiteKeyMargin * (whiteKeys.length - 1);
+    const width = keyboard.whiteKeyWidth * whiteKeys.length + keyboard.whiteKeyMargin * (whiteKeys.length - 1);
+
+    const octaveKeyboardStyle = {
+        'width': `${width}px`,
+        'height': `${keyboard.opts.whiteKeyHeight * keyboard.opts.keySizeMultiplier}px`,
+        'position': 'relative',
+    };
 
     return `<div class="octave-keyboard-wrapper" style="${hasMargin ? 'margin-right: 5px' : ''}">
-        <div class="octave-keyboard" style="width: ${width}px">
+        <div class="octave-keyboard" style="${styleString(octaveKeyboardStyle)}">
             ${
                 whiteKeys.map((note, i) => {
-                    return `<div class="octave-keyboard-white-key" style="left: ${(whiteKeyWidth + whiteKeyMargin) * i}px; display: flex; justify-content: center;"></div>`
+                    const style = {
+                        'background-color': 'white',
+                        'display': 'flex',
+                        'justify-content': 'center',
+                        'width': `${keyboard.opts.whiteKeyWidth * keyboard.opts.keySizeMultiplier}px`,
+                        'height': `${keyboard.opts.whiteKeyHeight * keyboard.opts.keySizeMultiplier}px`,
+                        'position': 'absolute',
+                        'left': `${(keyboard.whiteKeyWidth + keyboard.whiteKeyMargin) * i}px`,
+                        'top': '0',
+                    }
+
+                    return `<div class="octave-keyboard-white-key" style="${styleString(style)}"></div>`
                 }).join('')
             }
 
             ${
                 blackKeys.map((group, i) => {
-                    return `<div class="octave-keyboard-black-key-group" style="left: ${blackKeysGrops[i].marginLeft}">
+                    const style = {
+                        position: 'absolute',
+                        top: '0',
+                        left: `${keyboard.blackKeysGrops[i].marginLeft}`,
+                    };
+
+                    return `<div class="octave-keyboard-black-key-group" style="${styleString(style)}">
                         ${
                             group.map((key, i) => {
-                                return `<div class="octave-keyboard-black-key" style="left: ${(blackKeyWidth + blackKeyMargin) * i}px; display: flex; justify-content: center;"></div>`
+                                const style = {
+                                    'background': 'linear-gradient(#555 90%, #444 90%, #444 95%, #333 95%)',
+                                    'display': 'flex',
+                                    'justify-content': 'center',
+                                    'width': `${keyboard.opts.blackKeyWidth * keyboard.opts.keySizeMultiplier}px`,
+                                    'height': `${keyboard.opts.blackKeyHeight * keyboard.opts.keySizeMultiplier}px`,
+                                    'position': 'absolute',
+                                    'top': '0',
+                                    'left': `${(keyboard.blackKeyWidth + keyboard.blackKeyMargin) * i}px`,
+                                    'box-sizing': 'border-box',
+                                    'border-width': '0 5px 5px 5px',
+                                    'border-style': 'solid',
+                                    'border-color': '#222',
+                                }
+
+                                return `<div class="octave-keyboard-black-key" style="${styleString(style)}"></div>`
                             }).join('')
                         }
                     </div>`
@@ -114,23 +135,47 @@ const noteMark = (note: string, chroma: number, rootChroma: number, isRoot: bool
 
 interface KeyboardOpts {
     octaves: number;
+    whiteKeyWidth: number;
+    whiteKeyHeight: number;
+    blackKeyWidth: number;
+    blackKeyHeight: number;
+    keySizeMultiplier: number;
+}
+
+interface BlackKeyGroup {
+    marginLeft: string;
 }
 
 // @todo colorize notes (tonic/subdominant/dominant)
 export class Keyboard {
     root?: HTMLElement;
 
-    constructor(readonly opts: KeyboardOpts) {
+    readonly whiteKeyWidth: number;
+    readonly blackKeyWidth: number;
+    readonly whiteKeyMargin: number;
+    readonly blackKeyMargin: number;
+    readonly blackKeysGrops: [BlackKeyGroup, BlackKeyGroup];
 
+    constructor(readonly opts: KeyboardOpts) {
+        this.whiteKeyWidth = opts.whiteKeyWidth * opts.keySizeMultiplier;
+        this.blackKeyWidth = opts.blackKeyWidth * opts.keySizeMultiplier;
+
+        this.whiteKeyMargin = 5;
+        this.blackKeyMargin = 27;
+
+        this.blackKeysGrops = [
+            { marginLeft: `${this.whiteKeyWidth * 2 / 3}px` },
+            { marginLeft: `${this.whiteKeyWidth * 3.925}px` },
+        ];
     }
 
     render(el: HTMLElement) {
         this.root = el;
-        el.innerHTML = KeyboardBlock(this.opts.octaves);
+        el.innerHTML = KeyboardBlock(this);
     }
 
     showNotes(notes: string[]) {
-        if (!this.root) throw new Error();
+        if (!this.root) throw new Error('no root element found');
 
         const chromas = notes.map(chroma);
 
