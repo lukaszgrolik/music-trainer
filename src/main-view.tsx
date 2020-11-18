@@ -11,7 +11,7 @@ import { FretboardShapesBox } from './fretboard-shapes-box';
 import { ChordsTable } from './chords-table';
 import { ScaleFormBlock } from './scale-form-block';
 import { Store } from './store';
-import { ProgressionsBlock } from './progressions-block';
+import { ProgressionsBlock } from './progressions-block/progressions-block';
 
 const guitarScale = (a: number) => a * 3;
 const guitarScale2 = (a: number) => a * 2;
@@ -70,10 +70,10 @@ export const MainView: React.FunctionComponent<{store: Store}> = observer(({stor
 
     function drawNotes() {
         kb.showNotes(store.scaleNotes);
-        kb2.showNotes(store.scaleNotes);
-        kb3.showNotes(store.scaleNotes);
+        // kb2.showNotes(store.scaleNotes);
+        // kb3.showNotes(store.scaleNotes);
         fb.showNotes(store.scaleNotes);
-        fb2.showNotes(store.scaleNotes);
+        // fb2.showNotes(store.scaleNotes);
     }
 
     return (
@@ -89,11 +89,11 @@ export const MainView: React.FunctionComponent<{store: Store}> = observer(({stor
 
             <div>
                 <KeyboardBlock model={kb} />
-                <KeyboardBlock model={kb2} />
-                <KeyboardBlock model={kb3} />
+                {/* <KeyboardBlock model={kb2} />
+                <KeyboardBlock model={kb3} /> */}
 
                 <FretboardBlock model={fb} />
-                <FretboardBlock model={fb2} />
+                {/* <FretboardBlock model={fb2} /> */}
 
                 <FretboardShapesBox />
                 <ChordsTable store={store} />

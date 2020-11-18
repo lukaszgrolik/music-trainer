@@ -2,6 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
 import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
+import * as Tonal from '@tonaljs/tonal';
+
+(window as any).__debug = {
+    Tonal,
+};
 
 // import * as Store from './src/store/store';
 // import { LegacyView } from './src/views/legacy-view/legacy-view';
