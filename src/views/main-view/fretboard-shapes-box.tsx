@@ -3,8 +3,8 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import * as Tonal from '@tonaljs/tonal';
 
-import { Fretboard, FretboardTemplateShapes } from './lib/fretboard/fretboard';
-import { FretboardBlock } from './fretboard-block';
+import { Fretboard, FretboardTemplateShapes } from '../../lib/fretboard/fretboard';
+import { FretboardBlock } from '../../fretboard-block';
 
 type ScaleShape = {
     scale: string;

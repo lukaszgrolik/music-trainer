@@ -6,7 +6,7 @@ import {css} from '@emotion/react';
 import * as Tonal from '@tonaljs/tonal';
 import * as Tone from 'tone';
 
-import * as utils from '../utils';
+import * as utils from '../../../utils';
 import * as ProgData from './progressions-data';
 import { ProgressionsControl } from './progressions-control';
 import { ProgressionControl } from './progression-control';
@@ -38,15 +38,15 @@ interface Props {
 }
 
 export const ProgressionBlock: React.FunctionComponent<Props> = observer(({ prog, progressionsControl }) => {
-    const [key] = React.useState(utils.randomSample(ProgData.keys));
-    if (!key) throw new Error('key is invalid');
-
+    const [key, setKey] = React.useState(utils.randomSample(ProgData.keys));
     const [progression, setProgression] = React.useState<ProgressionControl | null>(null);
 
     React.useEffect(() => {
-        setProgression(new ProgressionControl(key, prog));
-    }, [key, prog]);
+        setKey(utils.randomSample(ProgData.keys));
+        if (!key) throw new Error('key is invalid');
 
+        setProgression(new ProgressionControl(progressionsControl, key, prog));
+    }, [prog]);
 
     if (!progression) return null;
 

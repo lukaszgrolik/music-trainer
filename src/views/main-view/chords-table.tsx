@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import * as Tonal from '@tonaljs/tonal';
 
-import { Store } from './store';
+import { Store } from '../../store';
 
 export const ChordsTable: React.FunctionComponent<{store: Store}> = observer(({store}) => {
     const modes = Tonal.Scale.modeNames(store.scaleName);

@@ -2,21 +2,21 @@ import { action, makeObservable, observable } from 'mobx';
 import * as Tonal from '@tonaljs/tonal';
 import * as Tone from 'tone';
 
-import * as utils from '../utils';
+import * as utils from '../../../utils';
 import * as ProgData from './progressions-data';
+import { ProgressionsControl } from './progressions-control';
 
 export class ProgressionControl {
     chordDuration = 2;
     isPlaying: boolean = false;
     activeChordIndex = -1;
 
-
     chords: string[] = [];
     tonalChords: string[] = [];
     sharedScales: string[] = [];
     progInfo: {name: string; info: string};
 
-    constructor(key: string, prog: ProgData.ProgressionItem) {
+    constructor(readonly progressionsControl: ProgressionsControl, key: string, prog: ProgData.ProgressionItem) {
         makeObservable(this, {
             chordDuration: observable,
             setChordDuration: action,
@@ -73,7 +73,9 @@ export class ProgressionControl {
 
         this.setIsPlaying(true);
 
-        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const vol = new Tone.Volume(this.progressionsControl.volume).toDestination();
+        // const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const synth = new Tone.PolySynth(Tone.Synth).connect(vol);
         let currentTime = Tone.now();
 
         this.tonalChords.forEach((tonalChord, i) => {

@@ -3,15 +3,14 @@ import { action } from 'mobx';
 import { observer } from "mobx-react-lite";
 import * as Tonal from '@tonaljs/tonal';
 
-import { Keyboard } from './lib/keyboard/keyboard';
-import { Fretboard, FretboardTemplateFull } from './lib/fretboard/fretboard';
-import { KeyboardBlock } from './keyboard-block';
-import { FretboardBlock } from './fretboard-block';
+import { Keyboard } from '../../lib/keyboard/keyboard';
+import { Fretboard, FretboardTemplateFull } from '../../lib/fretboard/fretboard';
+import { KeyboardBlock } from '../../keyboard-block';
+import { FretboardBlock } from '../../fretboard-block';
 import { FretboardShapesBox } from './fretboard-shapes-box';
 import { ChordsTable } from './chords-table';
 import { ScaleFormBlock } from './scale-form-block';
-import { Store } from './store';
-import { ProgressionsBlock } from './progressions-block/progressions-block';
+import { Store } from '../../store';
 
 const guitarScale = (a: number) => a * 3;
 const guitarScale2 = (a: number) => a * 2;
@@ -97,7 +96,6 @@ export const MainView: React.FunctionComponent<{store: Store}> = observer(({stor
 
                 <FretboardShapesBox />
                 <ChordsTable store={store} />
-                <ProgressionsBlock />
             </div>
         </div>
     )

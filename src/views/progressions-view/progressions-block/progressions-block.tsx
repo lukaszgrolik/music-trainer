@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import * as Tonal from '@tonaljs/tonal';
 import * as Tone from 'tone';
 
-import * as utils from '../utils';
+import * as utils from '../../../utils';
 import { ProgressionBlock } from './progression-block';
 import * as ProgData from './progressions-data';
 import { ProgressionsControl } from './progressions-control';
@@ -26,8 +26,8 @@ function getRandomBarChords() {
     });
 }
 
-function getRandomProgressions() {
-    return utils.randomSamples(ProgData.progressions, 3);
+function getRandomProgressions(n: number) {
+    return utils.randomSamples(ProgData.progressions, n);
 }
 
 const Header = styled.div`
@@ -63,9 +63,10 @@ const ChordBlock = styled.div`
 `;
 
 export const ProgressionsBlock = observer(() => {
-    const [randomOpenChords] = React.useState(getRandomOpenChords());
-    const [randomBarChords] = React.useState(getRandomBarChords());
-    const [randomProgressions] = React.useState(getRandomProgressions());
+    const [randomOpenChords, setRandomOpenChords] = React.useState(getRandomOpenChords());
+    const [randomBarChords, setRandomBarChords] = React.useState(getRandomBarChords());
+    const [progressionsCount, setProgressionsCount] = React.useState(3);
+    const [randomProgressions, setRandomProgressions] = React.useState(getRandomProgressions(progressionsCount));
     const [progressionsControl] = React.useState(new ProgressionsControl());
 
     const style = {
@@ -78,7 +79,10 @@ export const ProgressionsBlock = observer(() => {
         <div style={style}>
             <Header>
                 <ChordsWrapper>
-                    <div>random open chords:</div>
+                    <div>
+                        <span>random open chords</span>
+                        <button onClick={() => setRandomOpenChords(getRandomOpenChords())}>reload</button>
+                    </div>
 
                     <div>
                         <ChordsList>
@@ -92,7 +96,10 @@ export const ProgressionsBlock = observer(() => {
                 </ChordsWrapper>
 
                 <ChordsWrapper>
-                    <div>random bar chords:</div>
+                    <div>
+                        <span>random bar chords</span>
+                        <button onClick={() => setRandomBarChords(getRandomBarChords())}>reload</button>
+                    </div>
 
                     <div>
                         <ChordsList>
@@ -105,6 +112,23 @@ export const ProgressionsBlock = observer(() => {
                     </div>
                 </ChordsWrapper>
             </Header>
+
+            <div>
+                <form onSubmit={e => {
+                    e.preventDefault();
+
+                    setRandomProgressions(getRandomProgressions(progressionsCount));
+                }}>
+                    <input
+                        type="number"
+                        value={progressionsCount}
+                        onChange={e => setProgressionsCount(e.currentTarget.valueAsNumber || 0)}
+                        style={{width: 30}}
+                    />
+
+                    <button>generate</button>
+                </form>
+            </div>
 
             <div>
                 <label>
@@ -123,6 +147,17 @@ export const ProgressionsBlock = observer(() => {
                         onChange={e => progressionsControl.setShowScales(e.currentTarget.checked)}
                     />
                     show scales
+                </label>
+
+                <label>
+                    <input
+                        type="range"
+                        min={-20}
+                        max={5}
+                        value={progressionsControl.volume}
+                        onChange={e => progressionsControl.setVolume(e.currentTarget.valueAsNumber || 0)}
+                    />
+                    volume ({progressionsControl.volume > 0 ? '+' : ''}{progressionsControl.volume})
                 </label>
             </div>
 

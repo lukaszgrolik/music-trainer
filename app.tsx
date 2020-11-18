@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
 import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
 import * as Tonal from '@tonaljs/tonal';
 
@@ -8,12 +7,9 @@ import * as Tonal from '@tonaljs/tonal';
     Tonal,
 };
 
-// import * as Store from './src/store/store';
-// import { LegacyView } from './src/views/legacy-view/legacy-view';
-import { MainView } from './src/main-view';
 import * as Store from './src/store';
-// import { Store } from './src/store/store';
-
+import { MainView } from './src/views/main-view/main-view';
+import { ProgressionsView } from './src/views/progressions-view/progressions-view';
 
 const store = new Store.Store();
 
@@ -24,26 +20,20 @@ if (data.latestScales.length) store.scaleName = data.latestScales[0];
 
 const app = (
     <BrowserRouter>
-        {/* <ul>
+        <ul>
             <NavLink activeStyle={{ fontWeight: 'bold' }} exact to="/">Home</NavLink>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/projects">Projects</NavLink>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/legacy">Legacy</NavLink>
+            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/progressions">Progressions</NavLink>
         </ul>
 
         <Switch>
             <Route path="/" exact={true}>
-                <p>home</p>
-            </Route>
-
-            <Route path="/projects">
                 <MainView store={store} />
             </Route>
 
-            <Route path="/legacy">
-                <LegacyView />
+            <Route path="/progressions">
+                <ProgressionsView />
             </Route>
-        </Switch> */}
-        <MainView store={store} />
+        </Switch>
     </BrowserRouter>
 );
 

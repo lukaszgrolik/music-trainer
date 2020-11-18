@@ -7,10 +7,10 @@ import * as Tone from 'tone';
 
 import * as ProgData from './progressions-data';
 import { ProgressionsControl } from './progressions-control';
-import { Keyboard } from '../lib/keyboard/keyboard';
-import { KeyboardBlock } from '../keyboard-block';
-import { Fretboard, FretboardTemplateFull } from '../lib/fretboard/fretboard';
-import { FretboardBlock } from '../fretboard-block';
+import { Keyboard } from '../../../lib/keyboard/keyboard';
+import { KeyboardBlock } from '../../../keyboard-block';
+import { Fretboard, FretboardTemplateFull } from '../../../lib/fretboard/fretboard';
+import { FretboardBlock } from '../../../fretboard-block';
 import { ScaleBlock, ScalesList } from './scales-list';
 
 const guitarScale = (a: number) => a * 2;
@@ -49,7 +49,7 @@ export const ProgressionChordBlock: React.FC<Props> = observer(({ chord, progres
                 fb.showNotes(notes);
             }
         }, {fireImmediately: true})
-    }, []);
+    }, [chord]);
 
     return (
         <div>
