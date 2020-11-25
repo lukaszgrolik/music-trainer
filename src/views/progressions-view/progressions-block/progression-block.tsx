@@ -42,13 +42,23 @@ export const ProgressionBlock: React.FunctionComponent<Props> = observer(({ prog
     const [progression, setProgression] = React.useState<ProgressionControl | null>(null);
 
     React.useEffect(() => {
-        setKey(utils.randomSample(ProgData.keys));
+        const key = utils.randomSample(ProgData.keys);
         if (!key) throw new Error('key is invalid');
+        setKey(key);
 
         setProgression(new ProgressionControl(progressionsControl, key, prog));
     }, [prog]);
 
     if (!progression) return null;
+
+    function handlePlayClick() {
+        if (!progression) return;
+
+        if (progression.isPlaying)
+            progression.stopProgression();
+        else
+            progression.playProgression();
+    }
 
     return (
         <Wrapper>
@@ -56,11 +66,15 @@ export const ProgressionBlock: React.FunctionComponent<Props> = observer(({ prog
                 <div style={{ fontWeight: 'bold' }}>
                     <span>{key} {progression.chords.join('-')} ({progression.tonalChords.join('-')})</span>
 
-                    <button onClick={() => progression.playProgression()}>{progression.isPlaying ? 'stop' : 'play'}</button>
+                    <button
+                        disabled={progression.isStopping}
+                        onClick={handlePlayClick}
+                    >{(progression.isPlaying || progression.isStopping) ? 'stop' : 'play'}</button>
                     {/* <span>{progression.activeChordIndex}</span> */}
 
                     <input
                         type="number"
+                        disabled={progression.isPlaying || progression.isStopping}
                         value={progression.chordDuration}
                         onChange={e => progression.setChordDuration(e.currentTarget.valueAsNumber)}
                         style={{width: 30}}
