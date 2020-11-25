@@ -2,14 +2,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
 import * as Tonal from '@tonaljs/tonal';
+import * as Tone from 'tone';
 
 (window as any).__debug = {
     Tonal,
+    Tone,
 };
 
 import * as Store from './src/store';
 import { MainView } from './src/views/main-view/main-view';
 import { ProgressionsView } from './src/views/progressions-view/progressions-view';
+import { SequencesView } from './src/views/sequences-view/sequences-view';
 
 const store = new Store.Store();
 
@@ -23,6 +26,7 @@ const app = (
         <ul>
             <NavLink activeStyle={{ fontWeight: 'bold' }} exact to="/">Home</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/progressions">Progressions</NavLink>
+            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/sequences">Sequences</NavLink>
         </ul>
 
         <Switch>
@@ -32,6 +36,10 @@ const app = (
 
             <Route path="/progressions">
                 <ProgressionsView />
+            </Route>
+
+            <Route path="/sequences">
+                <SequencesView />
             </Route>
         </Switch>
     </BrowserRouter>
