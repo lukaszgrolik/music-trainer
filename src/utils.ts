@@ -1,6 +1,4 @@
-export function randomSample<T>(arr: T[]): T | null {
-    if (arr.length === 0) return null;
-
+export function randomSample<T>(arr: T[]): T {
     const i = Math.floor(Math.random() * arr.length);
     return arr[i];
 }

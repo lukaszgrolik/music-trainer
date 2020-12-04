@@ -142,7 +142,6 @@ export const SequencesView: React.FC = observer(() => {
                         const onPlayClick = () => {
                             const nameMatch = seqName.match(/(\w) (.+)/);
                             if (!nameMatch) throw new Error('invalid seqName');
-                            console.log('nameMatch')
 
                             const [_, tonic, name] = nameMatch;
 

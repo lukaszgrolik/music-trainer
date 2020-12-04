@@ -13,6 +13,7 @@ import * as Store from './src/store';
 import { MainView } from './src/views/main-view/main-view';
 import { ProgressionsView } from './src/views/progressions-view/progressions-view';
 import { SequencesView } from './src/views/sequences-view/sequences-view';
+import { TrainingView } from './src/views/training-view/training-view';
 
 const store = new Store.Store();
 
@@ -27,6 +28,7 @@ const app = (
             <NavLink activeStyle={{ fontWeight: 'bold' }} exact to="/">Home</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/progressions">Progressions</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/sequences">Sequences</NavLink>
+            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/training">Training</NavLink>
         </ul>
 
         <Switch>
@@ -40,6 +42,10 @@ const app = (
 
             <Route path="/sequences">
                 <SequencesView />
+            </Route>
+
+            <Route path="/training">
+                <TrainingView />
             </Route>
         </Switch>
     </BrowserRouter>
