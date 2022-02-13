@@ -28,12 +28,14 @@ function isChordShape(shape: Shape): shape is ScaleShape {
 
 interface ShapeGroup {
     id: string;
+    label: string;
     shapes: Shape[];
 }
 
 const shapes: ShapeGroup[] = [
     {
         id: 'minor-scale',
+        label: 'Minor',
         shapes: [
             {
                 scale: 'F minor',
@@ -52,6 +54,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'major-scale',
+        label: 'Major',
         shapes: [
             {
                 scale: 'F# major',
@@ -71,6 +74,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'minor-triad',
+        label: 'Minor triad',
         shapes: [
             {
                 chord: 'G#m',
@@ -96,6 +100,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'minor-triad-I-inv',
+        label: 'Minor triad I inv.',
         shapes: [
             {
                 chord: 'D#m',
@@ -116,6 +121,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'minor-triad-II-inv',
+        label: 'Minor triad II inv.',
         shapes: [
             {
                 chord: 'Cm',
@@ -136,6 +142,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'major-triad',
+        label: 'Major triad',
         shapes: [
             {
                 chord: 'F#',
@@ -161,6 +168,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'major-triad-I-inv',
+        label: 'Major triad I inv.',
         shapes: [
             {
                 chord: 'C#',
@@ -181,6 +189,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'major-triad-II-inv',
+        label: 'Major triad II inv.',
         shapes: [
             {
                 chord: 'A#',
@@ -201,6 +210,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'm7_maj7_7',
+        label: 'm7, maj7, 7',
         shapes: [
             {
                 chord: 'G#m7',
@@ -221,6 +231,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'm7b5_dim7_aug',
+        label: 'm7b5, dim7, aug',
         shapes: [
             {
                 chord: 'Fm7b5',
@@ -241,6 +252,7 @@ const shapes: ShapeGroup[] = [
     },
     {
         id: 'sus2_sus4',
+        label: 'sus2, sus4',
         shapes: [
             {
                 chord: 'Fsus2',
@@ -258,12 +270,12 @@ const shapes: ShapeGroup[] = [
 
 export const FretboardShapesBox: React.FunctionComponent = observer(() => {
     return (
-        <div style={{display: 'flex', flexWrap: 'wrap'}}>
+        <div style={{display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '.5em'}}>
             {
                 shapes.map(shape => {
                     return (
-                        <div key={shape.id} style={{ padding: '.5em' }}>
-                            <div>{shape.id}</div>
+                        <div key={shape.id} style={{ padding: '.5em', backgroundColor: '#fff' }}>
+                            <div style={{textAlign: 'center'}}>{shape.label}</div>
 
                             {
                                 shape.shapes
@@ -318,7 +330,8 @@ const FretboardShape: React.FC<{shape: Shape}> = ({shape}) => {
 
     return (
         <div style={{ marginBottom: '.5em' }}>
-            <div id="fretboard-shapes-box_${shape.id}_${i}"></div>
+            <div id="fretboard-shapes-box_${shape.id}_${i}" style={{marginBottom: '.5em'}}></div>
+
             <FretboardBlock model={fb} />
         </div>
     );

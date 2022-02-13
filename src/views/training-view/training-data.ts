@@ -124,6 +124,58 @@ Bb Bb/1 Bb/2
 
 B B/1 B/2 Bm Bm/1 Bm/2`,
     },
+    {
+        name: 'All dim7',
+        text: `// All dim7
+
+Adim7 Abdim7 A#dim7
+Bdim7 Bbdim7
+Cdim7 Cbdim7 C#dim7
+Ddim7 Dbdim7 D#dim7
+Edim7 Ebdim7
+Fdim7        F#dim7
+Gdim7 Gbdim7 G#dim7
+`,
+    },
+    {
+        name: 'All aug',
+        text: `// All aug
+
+A+ Ab+ A#+
+B+ Bb+
+C+ Cb+ C#+
+D+ Db+ D#+
+E+ Eb+
+F+        F#+
+G+ Gb+ G#+
+`,
+    },
+    {
+        name: 'All min & maj',
+        text: `// All min & maj
+
+A Am        A# A#m
+B Bm
+C Cm        C# C#m
+D Dm        D# D#m
+E Em
+F Fm        F# F#m
+G Gm        G# G#m
+`,
+    },
+    {
+        name: 'All min',
+        text: `// All min
+
+Am A#m
+Bm
+Cm C#m
+Dm D#m
+Em
+Fm F#m
+Gm G#m
+`,
+    },
 ];
 
 export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];

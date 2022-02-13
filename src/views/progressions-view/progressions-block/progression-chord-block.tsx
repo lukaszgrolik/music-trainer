@@ -27,6 +27,7 @@ export const ProgressionChordBlock: React.FC<Props> = observer(({ chord, progres
         whiteKeyHeight: 68,
         blackKeyWidth: 14,
         blackKeyHeight: 42,
+        whiteKeyMargin: 5,
         keySizeMultiplier: 1,
     }));
     const [fb] = React.useState(new Fretboard({

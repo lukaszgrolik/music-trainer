@@ -21,7 +21,7 @@ export function scaleNotes(scaleName: string): string[] {
 export class Store {
     readonly storage = new Storage();
 
-    scaleName = 'c major';
+    scaleName = 'C major';
     latestScales: string[] = [];
 
     constructor() {

@@ -1,8 +1,23 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import * as Tonal from '@tonaljs/tonal';
+import styled from '@emotion/styled';
 
 import { Store } from '../../store';
+
+
+const Table = styled.table`
+    /* background: silver; */
+    /* line-height: 1.4; */
+    th {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    td, th {
+        padding: .25em .5em;
+    }
+`;
 
 export const ChordsTable: React.FunctionComponent<{store: Store}> = observer(({store}) => {
     const modes = Tonal.Scale.modeNames(store.scaleName);
@@ -19,7 +34,7 @@ export const ChordsTable: React.FunctionComponent<{store: Store}> = observer(({s
 
     return (
         <div style={style}>
-            <table>
+            <Table>
                 <thead>
                     <tr>
                         <th></th>
@@ -139,7 +154,7 @@ export const ChordsTable: React.FunctionComponent<{store: Store}> = observer(({s
                         })
                     }
                 </tbody>
-            </table>
+            </Table>
         </div>
     );
 });

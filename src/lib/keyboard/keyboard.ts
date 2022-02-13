@@ -31,7 +31,7 @@ function chroma(note: string) {
 }
 
 const KeyboardBlock = (keyboard: Keyboard) => {
-    return `<div class="keyboard" style="background-color: #222; display: inline-flex; padding: 5px; line-height: 1; font-family: sans-serif;">
+    return `<div class="keyboard" style="background-color: #222; display: inline-flex; padding: ${keyboard.whiteKeyMargin}px; line-height: 1; font-family: sans-serif;">
         ${
             new Array(keyboard.opts.octaves).fill(undefined).map((_, i) => {
                 return OctaveKeyboardBlock(keyboard, i !== keyboard.opts.octaves - 1);
@@ -50,7 +50,7 @@ const OctaveKeyboardBlock = (keyboard: Keyboard, hasMargin: boolean) => {
         'position': 'relative',
     };
 
-    return `<div class="octave-keyboard-wrapper" style="${hasMargin ? 'margin-right: 5px' : ''}">
+    return `<div class="octave-keyboard-wrapper" style="${hasMargin ? `margin-right: ${keyboard.whiteKeyMargin}px` : ''}">
         <div class="octave-keyboard" style="${styleString(octaveKeyboardStyle)}">
             ${
                 whiteKeys.map((note, i) => {
@@ -90,7 +90,7 @@ const OctaveKeyboardBlock = (keyboard: Keyboard, hasMargin: boolean) => {
                                     'top': '0',
                                     'left': `${(keyboard.blackKeyWidth + keyboard.blackKeyMargin) * i}px`,
                                     'box-sizing': 'border-box',
-                                    'border-width': '0 5px 5px 5px',
+                                    'border-width': `0 ${keyboard.whiteKeyMargin}px ${keyboard.whiteKeyMargin}px ${keyboard.whiteKeyMargin}px`,
                                     'border-style': 'solid',
                                     'border-color': '#222',
                                 }
@@ -139,6 +139,7 @@ interface KeyboardOpts {
     whiteKeyHeight: number;
     blackKeyWidth: number;
     blackKeyHeight: number;
+    whiteKeyMargin: number;
     keySizeMultiplier: number;
 }
 
@@ -160,8 +161,8 @@ export class Keyboard {
         this.whiteKeyWidth = opts.whiteKeyWidth * opts.keySizeMultiplier;
         this.blackKeyWidth = opts.blackKeyWidth * opts.keySizeMultiplier;
 
-        this.whiteKeyMargin = 5;
-        this.blackKeyMargin = 27;
+        this.whiteKeyMargin = opts.whiteKeyMargin;
+        this.blackKeyMargin = 27 / 5 * this.whiteKeyMargin;
 
         this.blackKeysGrops = [
             { marginLeft: `${this.whiteKeyWidth * 2 / 3}px` },
