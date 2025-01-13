@@ -9,6 +9,7 @@ import * as utils from '../../../utils';
 import { ProgressionBlock } from './progression-block';
 import * as ProgData from './progressions-data';
 import { ProgressionsControl } from './progressions-control';
+import { ProgressionControl } from './progression-control';
 
 function getRandomOpenChords() {
     return utils.randomSamples(ProgData.openChords, ProgData.openChords.length);
@@ -30,6 +31,15 @@ function getRandomProgressions(n: number) {
     return utils.randomSamples(ProgData.progressions, n);
 }
 
+const Wrapper = styled.div`
+    font-family: Consolas, monospace;
+    // font-size: 1.2em;
+    line-height: 1;
+
+    > * + * {
+        margin-top: 1em;
+    }
+`;
 const Header = styled.div`
     > * + * {
         margin-top: 1em;
@@ -69,14 +79,8 @@ export const ProgressionsBlock = observer(() => {
     const [randomProgressions, setRandomProgressions] = React.useState(getRandomProgressions(progressionsCount));
     const [progressionsControl] = React.useState(new ProgressionsControl());
 
-    const style = {
-        fontFamily: 'Consolas, monospace',
-        // 'font-size': '1.2em',
-        lineHeight: 1,
-    };
-
     return (
-        <div style={style}>
+        <Wrapper>
             <Header>
                 <ChordsWrapper>
                     <div>
@@ -161,13 +165,53 @@ export const ProgressionsBlock = observer(() => {
                 </label>
             </div>
 
-            {
-                randomProgressions.map((prog, i) => {
-                    return (
-                        <ProgressionBlock key={i} prog={prog} progressionsControl={progressionsControl} />
-                    );
-                })
-            }
-        </div>
+            <div>
+                {
+                    randomProgressions.map((prog, i) => {
+                        return (
+                            <ProgressionBlock key={i} prog={prog} progressionsControl={progressionsControl} />
+                        );
+                    })
+                }
+            </div>
+
+            <div>
+                {/* <div>
+                    <input
+                        type="text"
+                        value={}
+                        onChange={e => {
+
+                        }}
+                    />
+                </div> */}
+
+                <div style={{lineHeight: 1.2}}>
+                    {
+                        ProgData.progressions.map((prog, i) => {
+                            const key = 'A';
+                            const progControl = new ProgressionControl(progressionsControl, key, prog);
+
+                            return (
+                                <div key={i} style={{ display: 'flex', gap: '1em' }}>
+                                    <div>{progControl.chords.join(' ')}</div>
+                                    <div style={{ display: 'flex', gap: '1em' }}>
+                                        <div style={{ color: '#999' }}>{progControl.tonalChords.join(' ')}</div>
+                                        {
+                                            (progControl.progInfo.name || progControl.progInfo.info)
+                                            &&
+                                            <div style={{ color: '#bbb', display: 'flex', gap: '1em'}}>
+                                                <div>{progControl.progInfo.name || '<unnamed>'}</div>
+                                                <div>{progControl.progInfo.info && <span> | {progControl.progInfo.info}</span>}</div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+            </div>
+        </Wrapper>
     );
 });

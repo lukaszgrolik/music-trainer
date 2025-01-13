@@ -41,8 +41,8 @@ const config: (env: {NODE_ENV?: string}) => webpack.Configuration = env => {
             host: '0.0.0.0',
             port: 3020,
             historyApiFallback: true,
-            disableHostCheck: true,
-            contentBase: path.join(__dirname, 'web')
+            // disableHostCheck: true,
+            static: path.join(__dirname, 'web')
         },
         resolve: {
             extensions: ['.ts', '.tsx', '.js'],

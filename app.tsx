@@ -12,9 +12,9 @@ import { Global, css } from '@emotion/react';
 
 import * as Store from './src/store';
 import { MainView } from './src/views/main-view/main-view';
-// import { ProgressionsView } from './src/views/progressions-view/progressions-view';
-// import { SequencesView } from './src/views/sequences-view/sequences-view';
-// import { TrainingView } from './src/views/training-view/training-view';
+import { ProgressionsView } from './src/views/progressions-view/progressions-view';
+import { SequencesView } from './src/views/sequences-view/sequences-view';
+import { TrainingView } from './src/views/training-view/training-view';
 
 const store = new Store.Store();
 
@@ -64,17 +64,17 @@ const app = (
     <BrowserRouter>
         <Global styles={cssReset} />
 
-        {/* <ul>
+        <ul>
             <NavLink activeStyle={{ fontWeight: 'bold' }} exact to="/">Home</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/progressions">Progressions</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/sequences">Sequences</NavLink>
             <NavLink activeStyle={{ fontWeight: 'bold' }} to="/training">Training</NavLink>
-        </ul> */}
+        </ul>
         <Switch>
             <Route path="/" exact={true}>
                 <MainView store={store} />
             </Route>
-            {/* <Route path="/progressions">
+            <Route path="/progressions">
                 <ProgressionsView />
             </Route>
             <Route path="/sequences">
@@ -82,7 +82,7 @@ const app = (
             </Route>
             <Route path="/training">
                 <TrainingView />
-            </Route> */}
+            </Route>
         </Switch>
     </BrowserRouter>
 );

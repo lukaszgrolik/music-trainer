@@ -47,6 +47,8 @@ export const progressions: ProgressionItem[] = [
         { chords: ['iiø', 'V', 'i'], name: '', info: 'neoclassical, medieval' },
         ['i', 'V', 'bVI', 'iv'],
         ['i', 'bVI', 'iiø', 'V'],
+        `i V bVI iv
+         i bVI iiø V`.replace(/\s+/g, ' ').split(' ')
     ],
 ];
 export const openChords = [
