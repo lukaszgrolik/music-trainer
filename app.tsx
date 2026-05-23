@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Link, NavLink, Route, Routes } from 'react-router-dom';
 import * as Tonal from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { Global, css } from '@emotion/react';
@@ -15,6 +15,7 @@ import { MainView } from './src/views/main-view/main-view';
 import { ProgressionsView } from './src/views/progressions-view/progressions-view';
 import { SequencesView } from './src/views/sequences-view/sequences-view';
 import { TrainingView } from './src/views/training-view/training-view';
+import { ChordProgressionsTrainerView } from './src/views/chord-progressions-trainer-view/chord-progressions-trainer-view';
 
 const store = new Store.Store();
 
@@ -65,26 +66,24 @@ const app = (
         <Global styles={cssReset} />
 
         <ul>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} exact to="/">Home</NavLink>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/progressions">Progressions</NavLink>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/sequences">Sequences</NavLink>
-            <NavLink activeStyle={{ fontWeight: 'bold' }} to="/training">Training</NavLink>
+            <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to="/">Home</NavLink>
+            <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to="/progressions">Progressions</NavLink>
+            <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to="/sequences">Sequences</NavLink>
+            <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to="/training">Training</NavLink>
+            <NavLink style={({ isActive }) => ({ fontWeight: isActive ? 'bold' : 'normal' })} to="/chord-progressions-trainer">Chord Progressions Trainer</NavLink>
         </ul>
-        <Switch>
-            <Route path="/" exact={true}>
-                <MainView store={store} />
-            </Route>
-            <Route path="/progressions">
-                <ProgressionsView />
-            </Route>
-            <Route path="/sequences">
-                <SequencesView />
-            </Route>
-            <Route path="/training">
-                <TrainingView />
-            </Route>
-        </Switch>
+        <Routes>
+            <Route path="/" element={<MainView store={store} />} />
+            <Route path="/progressions" element={<ProgressionsView />} />
+            <Route path="/sequences" element={<SequencesView />} />
+            <Route path="/training" element={<TrainingView />} />
+            <Route path="/chord-progressions-trainer" element={<ChordProgressionsTrainerView />} />
+        </Routes>
     </BrowserRouter>
 );
 
-ReactDOM.render(app, document.getElementById('react-root'));
+const rootElement = document.getElementById('react-root');
+
+if (rootElement) {
+    createRoot(rootElement).render(app);
+}

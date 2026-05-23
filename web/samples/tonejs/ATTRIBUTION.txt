@@ -1,0 +1,16 @@
+Sample files in this folder were sourced from:
+https://github.com/nbrosowsky/tonejs-instruments
+
+License summary from project README:
+- Code: MIT
+- Samples: CC BY 3.0
+  https://creativecommons.org/licenses/by/3.0/
+
+This project uses a reduced subset of notes for these instruments:
+- piano
+- guitar-acoustic
+- guitar-nylon
+- harp
+- flute
+
+When distributing this app publicly, keep this attribution file bundled with the samples.

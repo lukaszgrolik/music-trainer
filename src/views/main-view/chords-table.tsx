@@ -91,7 +91,7 @@ export const ChordsTable: React.FunctionComponent<{store: Store}> = observer(({s
                                                 // const important2 = ['dim', 'm7b5', 'dim7', 'aug'].includes(chord);
                                                 // const important3 = ['sus2', 'sus4'].includes(chord);
                                                 // const colors: {[key: string]: Array<string>} = {
-                                                const colors = {
+                                                const colors: Record<string, string[]> = {
                                                     [`hsl(${360 / 12 * 3}, 50%, 50%)`]: ['m', 'm7'],
                                                     [`hsl(${360 / 12 * 4}, 50%, 50%)`]: ['M', 'maj7', '7'],
                                                     [`hsl(${360 / 12 * 6}, 50%, 50%)`]: ['dim', 'm7b5', 'dim7'],
